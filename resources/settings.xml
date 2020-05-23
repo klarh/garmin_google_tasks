@@ -1,0 +1,5 @@
+<settings>
+  <setting propertyKey="@Properties.api_token" title="@Strings.APITokenTitle">
+    <settingConfig type="url"/>
+  </setting>
+</settings>
