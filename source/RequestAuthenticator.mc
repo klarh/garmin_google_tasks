@@ -156,7 +156,9 @@ class RequestAuthenticator {
             return;
         }
 
-        self.checkAccessToken();
+        if(!self.checkAccessToken()) {
+            return;
+        }
 
         if(self.pending_tasks.size() > 0) {
             self.currently_processing = true;
