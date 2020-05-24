@@ -89,8 +89,8 @@ class RequestAuthenticator {
             "redirect_uri" => $.RedirectUri,
             "response_type" => "code",
             "scope" => "https://www.googleapis.com/auth/tasks",
-            /* "code_challenge" => self.getCodeVerifier(), */
-            /* "code_challenge_method" => "plain", */
+            "code_challenge" => self.getCodeVerifier(),
+            "code_challenge_method" => "plain",
         };
 
         Communications.openWebPage($.AuthUrl, params, null);
@@ -104,7 +104,6 @@ class RequestAuthenticator {
         var params = {
             "client_id" => self.client_id,
             "client_secret" => self.client_secret,
-            /* "code_verifier" => self.getCodeVerifier(), */
         };
 
         var refresh_token = Application.Storage.getValue($.RefreshToken);
@@ -114,6 +113,7 @@ class RequestAuthenticator {
         }
         else {
             params["code"] = Application.Properties.getValue($.UserTokenId);
+            params["code_verifier"] = self.getCodeVerifier();
             params["grant_type"] = "authorization_code";
             params["redirect_uri"] = $.RedirectUri;
         }
