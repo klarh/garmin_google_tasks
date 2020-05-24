@@ -2,3 +2,4 @@ developer_key.der
 sdk
 build
 release
+resources/json_data/client_secret.json
