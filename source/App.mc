@@ -3,27 +3,57 @@ using Toybox.Time;
 using Toybox.WatchUi;
 
 class TasksApp extends Application.AppBase {
-    var task_authenticator;
+    var request_authenticator;
 
     function initialize() {
+//        System.println("initialize");
         AppBase.initialize();
-        self.task_authenticator = new TaskAuthenticator(self.weak());
+        self.request_authenticator = new RequestAuthenticator();
     }
 
     // onStart() is called on application start up
     function onStart(state) {
+//        System.println("onStart");
     }
 
     // onStop() is called when your application is exiting
     function onStop(state) {
+//        System.println("onStop");
     }
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [new LoadingView(self.task_authenticator), new DiceDelegate()];
+//        System.println("getInitialView");
+        self.listTaskLists();
+        return [new LoadingView(), new DiceDelegate()];
     }
 
     function onSettingsChanged() {
-        self.task_authenticator.onSettingsChanged();
+//        System.println("onSettingsChanged");
+        if(self.request_authenticator.onSettingsChanged()) {
+            self.listTaskLists();
+        }
+    }
+
+    function listTaskLists() {
+//        System.println("listTaskLists");
+        self.request_authenticator.add(new ListTaskListRequest(self.weak()));
+        self.request_authenticator.processRequests();
+    }
+
+    function listTasks(id, label) {
+//        System.println("listTasks");
+        self.request_authenticator.add(new ListTasksRequest(self.weak(), label, id));
+        self.request_authenticator.processRequests();
+    }
+
+    function toggleTask(list_id, task_id) {
+//        System.println("toggleTask");
+        var request = new CheckTaskRequest(list_id, task_id);
+        self.request_authenticator.add(request);
+        // add twice for the two steps: grabbing the current value and
+        // posting an updated value
+        self.request_authenticator.add(request);
+        self.request_authenticator.processRequests();
     }
 }

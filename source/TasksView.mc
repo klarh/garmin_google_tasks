@@ -1,33 +1,150 @@
+using Toybox.Communications;
 using Toybox.System;
 using Toybox.WatchUi;
 
-class TasksDelegate extends WatchUi.Menu2InputDelegate {
-    var task_authenticator;
+const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
+const TaskUrl2 = "/tasks/";
 
-    function initialize(task_authenticator) {
+class ListTasksRequest extends Request {
+    var app;
+    var list_name;
+    var list_id;
+
+    function initialize(app, list_name, list_id) {
+//        System.println("initialize");
+        Request.initialize();
+        self.app = app;
+        self.list_name = list_name;
+        self.list_id = list_id;
+    }
+
+    function request(access_token, callback) {
+//        System.println("request");
+        var params = {
+            "access_token" => access_token,
+            "maxResults" => 100,
+            "showCompleted" => "True",
+            /* "showHidden" => "True", */
+        };
+
+        var options = {
+            :method => Communications.HTTP_REQUEST_METHOD_GET,
+            :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
+        };
+
+        var url = $.TaskUrl1 + self.list_id + $.TaskUrl2;
+
+        Communications.makeWebRequest(
+            url, params, options, callback);
+    }
+
+    function run(returnCode, data) {
+//        System.println("run");
+        var task_items = data["items"];
+
+        var view = new TasksView(self.list_name);
+
+        for(var i = 0; i < task_items.size(); i++) {
+            var item = task_items[i];
+            view.addItem(
+                item["title"], item["notes"], item["id"],
+                "completed".equals(item["status"]));
+        }
+
+        WatchUi.pushView(
+            view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_IMMEDIATE);
+    }
+}
+
+class CheckTaskRequest extends Request {
+    var task_data;
+    var list_id;
+    var task_id;
+
+    function initialize(list_id, task_id) {
+//        System.println("initialize");
+        Request.initialize();
+        self.task_data = null;
+        self.list_id = list_id;
+        self.task_id = task_id;
+    }
+
+    function request(access_token, callback) {
+//        System.println("request");
+        if(self.task_data == null) {
+            var params = {
+                "access_token" => access_token,
+            };
+
+            var options = {
+                :method => Communications.HTTP_REQUEST_METHOD_GET,
+                :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
+            };
+
+            var url = $.TaskUrl1 + self.list_id + $.TaskUrl2 + self.task_id;
+
+            Communications.makeWebRequest(
+                url, params, options, callback);
+        }
+        else {
+            var bearer = "Bearer " + access_token;
+
+            var options = {
+                :method => Communications.HTTP_REQUEST_METHOD_PUT,
+                :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
+                :headers => {
+                    "Content-Type" => Communications.REQUEST_CONTENT_TYPE_JSON,
+                    "Authorization" => bearer,
+                },
+            };
+
+            var url = $.TaskUrl1 + self.list_id + $.TaskUrl2 + self.task_id;
+
+            Communications.makeWebRequest(
+                url, self.task_data, options, callback);
+        }
+    }
+
+    function run(returnCode, data) {
+//        System.println("run");
+        if("completed".equals(data["status"])) {
+            data["status"] = "needsAction";
+        }
+        else {
+            data["status"] = "completed";
+        }
+
+        self.task_data = data;
+    }
+}
+
+class TasksDelegate extends WatchUi.Menu2InputDelegate {
+    var app;
+    var list_id;
+
+    function initialize(app, list_id) {
+//        System.println("initialize");
         Menu2InputDelegate.initialize();
-        self.task_authenticator = task_authenticator;
+        self.app = app;
+        self.list_id = list_id;
     }
 
     function onSelect(item) {
-        self.task_authenticator.get().toggleTask(item.getId());
-//        self.task_authenticator.get().listTasks(item.getId());
+//        System.println("onSelect");
+        self.app.get().toggleTask(self.list_id, item.getId());
     }
 }
 
 class TasksView extends WatchUi.CheckboxMenu {
-    function initialize(task_titles, task_notes, task_ids, task_checks, list_name) {
+    function initialize(list_name) {
+//        System.println("initialize");
         CheckboxMenu.initialize({:title => list_name});
+    }
 
-        for(var i = 0; i < task_titles.size(); i++) {
-            self.addItem(
-                new WatchUi.CheckboxMenuItem(
-                    task_titles[i],
-                    task_notes[i],
-                    task_ids[i],
-                    task_checks[i],
-                    {}
-                    ));
-        }
+    function addItem(title, note, id, check) {
+//        System.println("addItem");
+        return CheckboxMenu.addItem(
+            new WatchUi.CheckboxMenuItem(
+                title, note, id, check, {}));
     }
 }
