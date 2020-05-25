@@ -2,10 +2,12 @@ using Toybox.Graphics;
 using Toybox.WatchUi;
 
 class LoadingView extends WatchUi.View {
+    var is_visible;
     var target;
     var font;
 
     function initialize(target) {
+        self.is_visible = false;
         if("tasks".equals(target)) {
             self.target = "t";
         }
@@ -20,6 +22,11 @@ class LoadingView extends WatchUi.View {
     }
 
     function onShow() {
+        self.is_visible = true;
+    }
+
+    function onHide() {
+        self.is_visible = false;
     }
 
     function onLayout(dc) {

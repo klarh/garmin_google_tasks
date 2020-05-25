@@ -29,7 +29,7 @@ def enter_directory(dirname):
 
 char_map = dict(
     v='arrow_paste',
-    l='arrow_list',
+    l='arrow_lists',
     t='arrow_tasks',
     x='arrow_x',
     g='settings_gear',

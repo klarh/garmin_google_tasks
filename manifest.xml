@@ -6,7 +6,7 @@
       minSdkVersion="3.0.0"
       name="@Strings.AppName"
       type="watch-app"
-      version="0.54.0"
+      version="0.60.0"
       >
 
     <iq:products>

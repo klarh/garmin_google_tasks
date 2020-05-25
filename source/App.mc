@@ -25,7 +25,7 @@ class TasksApp extends Application.AppBase {
     function getInitialView() {
 //        System.println("getInitialView");
         self.listTaskLists();
-        return [new LoadingView("tasks"), new DiceDelegate()];
+        return [new LoadingView("lists"), new DiceDelegate()];
     }
 
     function onSettingsChanged() {
@@ -43,7 +43,12 @@ class TasksApp extends Application.AppBase {
 
     function listTasks(id, label) {
 //        System.println("listTasks");
-        self.request_authenticator.add(new ListTasksRequest(self.weak(), label, id));
+        var loading_view = new LoadingView("tasks");
+        WatchUi.pushView(
+            loading_view, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
+
+        self.request_authenticator.add(
+            new ListTasksRequest(self.weak(), loading_view.weak(), label, id));
         self.request_authenticator.processRequests();
     }
 

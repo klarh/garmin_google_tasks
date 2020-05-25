@@ -7,13 +7,15 @@ const TaskUrl2 = "/tasks/";
 
 class ListTasksRequest extends Request {
     var app;
+    var loading_view;
     var list_name;
     var list_id;
 
-    function initialize(app, list_name, list_id) {
+    function initialize(app, loading_view, list_name, list_id) {
 //        System.println("initialize");
         Request.initialize();
         self.app = app;
+        self.loading_view = loading_view;
         self.list_name = list_name;
         self.list_id = list_id;
     }
@@ -51,8 +53,14 @@ class ListTasksRequest extends Request {
                 "completed".equals(item["status"]));
         }
 
-        WatchUi.switchToView(
-            view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+        if(self.loading_view.stillAlive() && self.loading_view.get().is_visible) {
+            WatchUi.switchToView(
+                view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+        }
+        else {
+            WatchUi.pushView(
+                view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+        }
     }
 }
 

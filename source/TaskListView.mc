@@ -58,9 +58,6 @@ class TaskListDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item) {
 //        System.println("onSelect");
-        WatchUi.pushView(
-            new LoadingView("tasks"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
-
         self.app.get().listTasks(item.getId(), item.getLabel());
     }
 }
