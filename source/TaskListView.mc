@@ -16,7 +16,7 @@ class ListTaskListRequest extends Request {
     function request(access_token, callback) {
 //        System.println("request");
         WatchUi.switchToView(
-            new LoadingView(), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
+            new LoadingView("lists"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
 
         var params = {
             "access_token" => access_token,
@@ -58,6 +58,9 @@ class TaskListDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item) {
 //        System.println("onSelect");
+        WatchUi.switchToView(
+            new LoadingView("tasks"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
+
         self.app.get().listTasks(item.getId(), item.getLabel());
     }
 }

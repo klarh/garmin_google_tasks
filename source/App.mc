@@ -25,7 +25,7 @@ class TasksApp extends Application.AppBase {
     function getInitialView() {
 //        System.println("getInitialView");
         self.listTaskLists();
-        return [new LoadingView(), new DiceDelegate()];
+        return [new LoadingView("tasks"), new DiceDelegate()];
     }
 
     function onSettingsChanged() {
