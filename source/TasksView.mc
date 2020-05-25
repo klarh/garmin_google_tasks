@@ -51,8 +51,8 @@ class ListTasksRequest extends Request {
                 "completed".equals(item["status"]));
         }
 
-        WatchUi.pushView(
-            view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.switchToView(
+            view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
     }
 }
 

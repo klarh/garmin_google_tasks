@@ -194,7 +194,7 @@ class RequestAuthenticator {
             }
             WatchUi.switchToView(
                 new ErrorView(responseCode, msg), new WatchUi.BehaviorDelegate(),
-                WatchUi.SLIDE_IMMEDIATE);
+                WatchUi.SLIDE_DOWN);
 
             var timer = new Timer.Timer();
             timer.start(method(:initialAuth), 8000, false);
