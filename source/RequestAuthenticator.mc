@@ -3,6 +3,7 @@ using Toybox.Communications;
 using Toybox.Cryptography;
 using Toybox.StringUtil;
 using Toybox.System;
+using Toybox.Timer;
 using Toybox.WatchUi;
 
 const AuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -188,9 +189,15 @@ class RequestAuthenticator {
 //        System.println(data);
 
         if(self.last_error_code == responseCode) {
-            var msg = data["error"];
-            if(data["error_description"] != null) {
-                msg = msg + ": " + data["error_description"];
+            var msg;
+            if(data == null) {
+                msg = "Empty response";
+            }
+            else {
+                msg = data["error"];
+                if(data["error_description"] != null) {
+                    msg = msg + ": " + data["error_description"];
+                }
             }
             WatchUi.switchToView(
                 new ErrorView(responseCode, msg), new WatchUi.BehaviorDelegate(),
