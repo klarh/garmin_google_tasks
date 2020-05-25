@@ -45,7 +45,8 @@ run: build/app-${device}.prg
 	./run.sh "$<" ${device}
 
 .PHONY: fonts
-fonts: resources/fonts/icon_font_72.png
+fonts: resources/fonts/icon_font_72.png \
+	resources/fonts/icon_font_128.png
 
 .PRECIOUS: resources/fonts/icon_font_%.png
 resources/fonts/icon_font_%.png: support/icon_font.tar support/make_font.py

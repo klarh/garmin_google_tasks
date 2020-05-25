@@ -30,7 +30,12 @@ class LoadingView extends WatchUi.View {
     }
 
     function onLayout(dc) {
-        self.font = WatchUi.loadResource(Rez.Fonts.icon_font_72);
+        if(dc.getWidth() > 300) {
+            self.font = WatchUi.loadResource(Rez.Fonts.icon_font_128);
+        }
+        else {
+            self.font = WatchUi.loadResource(Rez.Fonts.icon_font_72);
+        }
     }
 
     function onUpdate(dc) {

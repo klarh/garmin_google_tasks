@@ -20,7 +20,12 @@ class ErrorView extends WatchUi.View {
         var data_label = View.findDrawableById("error_text");
         data_label.setText(self.data.toString());
 
-        self.font = WatchUi.loadResource(Rez.Fonts.icon_font_72);
+        if(dc.getWidth() > 300) {
+            self.font = WatchUi.loadResource(Rez.Fonts.icon_font_128);
+        }
+        else {
+            self.font = WatchUi.loadResource(Rez.Fonts.icon_font_72);
+        }
     }
 
     function onUpdate(dc) {
