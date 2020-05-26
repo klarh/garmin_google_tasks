@@ -25,7 +25,7 @@ class TasksApp extends Application.AppBase {
     function getInitialView() {
 //        System.println("getInitialView");
         self.listTaskLists();
-        return [new LoadingView("lists"), new DiceDelegate()];
+        return [new LoadingView("lists"), new WatchUi.BehaviorDelegate()];
     }
 
     function onSettingsChanged() {
