@@ -60,3 +60,6 @@ icons: resources/drawables/launcher_icon.png
 
 resources/drawables/launcher_icon.png: support/launcher_icon.svg
 	inkscape --export-filename="$@" -w 30 -h 30 "$<"
+
+resources/json_data/client_secret.json:
+	$(error Needs client secret from google API dashboard)
