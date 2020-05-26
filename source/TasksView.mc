@@ -12,7 +12,6 @@ class ListTasksRequest extends Request {
     var list_id;
 
     function initialize(app, loading_view, list_name, list_id) {
-//        System.println("initialize");
         Request.initialize();
         self.app = app;
         self.loading_view = loading_view;
@@ -21,7 +20,6 @@ class ListTasksRequest extends Request {
     }
 
     function request(access_token, callback) {
-//        System.println("request");
         var params = {
             "access_token" => access_token,
             "maxResults" => 100,
@@ -41,7 +39,6 @@ class ListTasksRequest extends Request {
     }
 
     function run(returnCode, data) {
-//        System.println("run");
         var task_items = data["items"];
 
         var view = new TasksView(self.list_name);
@@ -70,7 +67,6 @@ class CheckTaskRequest extends Request {
     var task_id;
 
     function initialize(list_id, task_id) {
-//        System.println("initialize");
         Request.initialize();
         self.task_data = null;
         self.list_id = list_id;
@@ -78,7 +74,6 @@ class CheckTaskRequest extends Request {
     }
 
     function request(access_token, callback) {
-//        System.println("request");
         if(self.task_data == null) {
             var params = {
                 "access_token" => access_token,
@@ -114,7 +109,6 @@ class CheckTaskRequest extends Request {
     }
 
     function run(returnCode, data) {
-//        System.println("run");
         if("completed".equals(data["status"])) {
             data["status"] = "needsAction";
         }
@@ -131,26 +125,22 @@ class TasksDelegate extends WatchUi.Menu2InputDelegate {
     var list_id;
 
     function initialize(app, list_id) {
-//        System.println("initialize");
         Menu2InputDelegate.initialize();
         self.app = app;
         self.list_id = list_id;
     }
 
     function onSelect(item) {
-//        System.println("onSelect");
         self.app.get().toggleTask(self.list_id, item.getId());
     }
 }
 
 class TasksView extends WatchUi.CheckboxMenu {
     function initialize(list_name) {
-//        System.println("initialize");
         CheckboxMenu.initialize({:title => list_name});
     }
 
     function addItem(title, note, id, check) {
-//        System.println("addItem");
         return CheckboxMenu.addItem(
             new WatchUi.CheckboxMenuItem(
                 title, note, id, check, {}));

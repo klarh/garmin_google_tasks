@@ -16,15 +16,12 @@ const HashSalt = "Google Tasks watch app; klarh7+garmin_dev@gmail.com";
 
 class Request {
     function initialize() {
-//        System.println("initialize");
     }
 
     function request(access_token, callback) {
-//        System.println("request");
     }
 
     function run(returnCode, data) {
-//        System.println("run");
     }
 }
 
@@ -39,7 +36,6 @@ class RequestAuthenticator {
     var last_error_code = null;
 
     function initialize() {
-//        System.println("initialize");
         self.pending_tasks = [];
         self.access_token = "";
         self.currently_processing = false;
@@ -58,7 +54,6 @@ class RequestAuthenticator {
     }
 
     function getCodeVerifier() {
-//        System.println("getCodeVerifier");
         var settings = System.getDeviceSettings();
         var hash = new Cryptography.Hash({:algorithm => Cryptography.HASH_SHA256});
         var encode_options = {
@@ -80,7 +75,6 @@ class RequestAuthenticator {
     }
 
     function initialAuth() {
-//        System.println("initialAuth");
         WatchUi.switchToView(
             new PhoneView(), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
 //        WatchUi.requestUpdate();
@@ -98,7 +92,6 @@ class RequestAuthenticator {
     }
 
     function requestToken() {
-//        System.println("requestToken");
         WatchUi.switchToView(
             new LoadingView("token"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
 
@@ -130,7 +123,6 @@ class RequestAuthenticator {
     }
 
     function tokenCallback(responseCode, data) {
-//        System.println("tokenCallback");
 
         if(responseCode == 200) {
             self.access_token = data["access_token"];
@@ -151,8 +143,6 @@ class RequestAuthenticator {
     }
 
     function processRequests() {
-//        System.println("processRequests");
-//        System.println(self.pending_tasks.size().toString() + " " + self.currently_processing.toString());
         if(self.currently_processing) {
             return;
         }
@@ -169,9 +159,7 @@ class RequestAuthenticator {
     }
 
     function processRequestsCallback(responseCode, data) {
-//        System.println("processRequestsCallback (should always be true) " + self.currently_processing.toString());
         self.currently_processing = false;
-//        System.println(self.pending_tasks.size().toString() + " " + responseCode.toString() + " " + data.toString());
         if(responseCode == 200) {
             var task = self.pending_tasks[0];
             self.pending_tasks = self.pending_tasks.slice(1, null);
@@ -184,9 +172,6 @@ class RequestAuthenticator {
     }
 
     function handleHTTPError(responseCode, data) {
-//        System.println("handleHTTPError");
-//        System.println(responseCode);
-//        System.println(data);
 
         if(self.last_error_code == responseCode) {
             var msg;
@@ -214,7 +199,6 @@ class RequestAuthenticator {
     }
 
     function onSettingsChanged() {
-//        System.println("onSettingsChanged");
         var user_token = Application.Properties.getValue($.UserTokenId);
         var last_user_token = Application.Storage.getValue($.LastUserTokenId);
 
@@ -227,7 +211,6 @@ class RequestAuthenticator {
     }
 
     function checkAccessToken() {
-//        System.println("checkAccessToken");
         if(self.access_token.length() > 0) {
             return true;
         }
@@ -246,7 +229,6 @@ class RequestAuthenticator {
     }
 
     function add(request) {
-//        System.println("add");
         self.pending_tasks.add(request);
     }
 
