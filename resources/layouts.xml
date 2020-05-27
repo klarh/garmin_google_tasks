@@ -1,6 +1,6 @@
 <resources>
   <layout id="ErrorScreen">
     <label id="error_code" text="Error" x="50%" y="10%" font="Gfx.FONT_LARGE" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER" />
-    <text-area id="error_text" text="Error" width="70%" height="35%" x="15%" y="60%" font="Gfx.FONT_TINY" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER" />
+    <text-area id="error_text" text="Error" width="70%" height="35%" x="15%" y="60%" font="Gfx.FONT_XTINY" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER" />
   </layout>
 </resources>
