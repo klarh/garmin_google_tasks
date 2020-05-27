@@ -14,7 +14,7 @@ class ListTaskListRequest extends Request {
 
     function request(access_token, callback) {
         WatchUi.switchToView(
-            new LoadingView("lists"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
+            new LoadingView("lists", null), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
 
         var params = {
             "access_token" => access_token,

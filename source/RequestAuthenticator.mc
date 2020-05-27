@@ -93,7 +93,7 @@ class RequestAuthenticator {
 
     function requestToken() {
         WatchUi.switchToView(
-            new LoadingView("token"), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
+            new LoadingView("token", null), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
 
         var params = {
             "client_id" => self.client_id,

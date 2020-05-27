@@ -1,5 +1,6 @@
 using Toybox.Application;
 using Toybox.Time;
+using Toybox.Timer;
 using Toybox.WatchUi;
 
 class TasksApp extends Application.AppBase {
@@ -20,8 +21,8 @@ class TasksApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        self.listTaskLists();
-        return [new LoadingView("lists"), new WatchUi.BehaviorDelegate()];
+        var view = new LoadingView("lists", method(:listTaskLists));
+        return [view, new WatchUi.BehaviorDelegate()];
     }
 
     function onSettingsChanged() {
@@ -36,7 +37,7 @@ class TasksApp extends Application.AppBase {
     }
 
     function listTasks(id, label) {
-        var loading_view = new LoadingView("tasks");
+        var loading_view = new LoadingView("tasks", null);
         WatchUi.pushView(
             loading_view, new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
 

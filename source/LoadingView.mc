@@ -3,11 +3,13 @@ using Toybox.WatchUi;
 
 class LoadingView extends WatchUi.View {
     var is_visible;
+    var callback;
     var target;
     var font;
 
-    function initialize(target) {
+    function initialize(target, callback) {
         self.is_visible = false;
+        self.callback = callback;
         if("tasks".equals(target)) {
             self.target = "t";
         }
@@ -23,6 +25,9 @@ class LoadingView extends WatchUi.View {
 
     function onShow() {
         self.is_visible = true;
+        if(self.callback != null) {
+            self.callback.invoke();
+        }
     }
 
     function onHide() {
