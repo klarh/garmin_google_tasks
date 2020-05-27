@@ -167,7 +167,7 @@ class RequestAuthenticator {
             self.processRequests();
         }
         else {
-            return self.handleHTTPError(responseCode, data);
+            self.handleHTTPError(responseCode, data);
         }
     }
 
