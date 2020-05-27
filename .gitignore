@@ -3,3 +3,6 @@ sdk
 build
 release
 resources/json_data/client_secret.json
+resources/drawables/launcher_icon.png
+resources/fonts/icon_font_*.*
+support/icon_font.tar
