@@ -1,12 +1,12 @@
 <iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
   <iq:application
       entry="TasksApp"
-      id="d9e83bf43c5646b1b4b3022d7fb817fb"
+      id="a5dbc81521e64500966af86760ef7d32"
       launcherIcon="@Drawables.LauncherIcon"
       minSdkVersion="3.0.0"
       name="@Strings.AppName"
       type="watch-app"
-      version="0.62.0"
+      version="0.1.0"
       >
 
     <iq:products>
