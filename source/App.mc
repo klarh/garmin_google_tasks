@@ -47,11 +47,7 @@ class TasksApp extends Application.AppBase {
     }
 
     function toggleTask(list_id, task_id) {
-        var request = new CheckTaskRequest(list_id, task_id);
-        self.request_authenticator.add(request);
-        // add twice for the two steps: grabbing the current value and
-        // posting an updated value
-        self.request_authenticator.add(request);
+        self.request_authenticator.add(new CheckTaskRequest(list_id, task_id));
         self.request_authenticator.processRequests();
     }
 }

@@ -162,8 +162,12 @@ class RequestAuthenticator {
         self.currently_processing = false;
         if(responseCode == 200) {
             var task = self.pending_tasks[0];
-            self.pending_tasks = self.pending_tasks.slice(1, null);
-            task.run(responseCode, data);
+            var result = task.run(responseCode, data);
+
+            if(result != :rerun) {
+                self.pending_tasks = self.pending_tasks.slice(1, null);
+            }
+
             self.processRequests();
         }
         else {
