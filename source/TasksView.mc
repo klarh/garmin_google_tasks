@@ -5,33 +5,6 @@ using Toybox.WatchUi;
 const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
 const TaskUrl2 = "/tasks/";
 
-function strcmp(a, b) {
-    var aarr = a.toUtf8Array();
-    var barr = b.toUtf8Array();
-
-    for(var i = 0; i < aarr.size(); i++) {
-        if(i == barr.size()) {
-            return 1;
-        }
-
-        var ai = aarr[i];
-        var bi = barr[i];
-
-        if(ai < bi) {
-            return -1;
-        }
-        else if(ai > bi) {
-            return 1;
-        }
-    }
-
-    if(aarr.size() < barr.size()) {
-        return -1;
-    }
-
-    return 0;
-}
-
 function merge_sorted(src, dest, i, j) {
     // p and q: current indices from src[i] and src[j]
     var p = i;
@@ -53,7 +26,7 @@ function merge_sorted(src, dest, i, j) {
         var left = src[p];
         var right = src[q];
 
-        if(strcmp(left, right) <= 0) {
+        if(left <= right) {
             dest[r] = left;
             p += 1;
         }
@@ -79,7 +52,7 @@ function merge_sorted(src, dest, i, j) {
     }
 }
 
-// Sort an array of strings using strcmp
+// Sort an array of Numbers
 function sort(arr) {
     var N = arr.size();
     var tempspace = new [N];
@@ -155,7 +128,12 @@ class ListTasksRequest extends Request {
 
         for(var i = 0; i < task_items.size(); i++) {
             var item = task_items[i];
-            self.pending_rows[item["position"]] = [
+            var sort_key = item["position"].toNumber();
+            if(sort_key == null) {
+                sort_key = i + 1024;
+            }
+
+            self.pending_rows[sort_key] = [
                 item["title"], item["notes"], item["id"],
                 "completed".equals(item["status"])];
         }
