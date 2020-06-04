@@ -2,4 +2,10 @@
   <setting propertyKey="@Properties.api_token" title="@Strings.APITokenTitle">
     <settingConfig type="url"/>
   </setting>
+  <setting propertyKey="@Properties.sort_type" title="@Strings.SortTypeTitle" prompt="@Strings.SortTypePrompt">
+    <settingConfig type="list">
+      <listEntry value="0">@Strings.SortTypeNone</listEntry>
+      <listEntry value="1">@Strings.SortTypeUser</listEntry>
+    </settingConfig>
+  </setting>
 </settings>

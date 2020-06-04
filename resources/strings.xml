@@ -1,4 +1,8 @@
 <strings>
   <string id="AppName">Task Sync</string>
   <string id="APITokenTitle">Google API Authentication Code</string>
+  <string id="SortTypeTitle">Task Sort Type</string>
+  <string id="SortTypePrompt">Sort tasks? (None is faster)</string>
+  <string id="SortTypeNone">None</string>
+  <string id="SortTypeUser">User</string>
 </strings>

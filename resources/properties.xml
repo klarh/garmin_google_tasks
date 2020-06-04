@@ -1,3 +1,4 @@
 <properties>
   <property id="api_token" type="string"></property>
+  <property id="sort_type" type="number">1</property>
 </properties>

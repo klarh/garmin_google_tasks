@@ -2,6 +2,7 @@ using Toybox.Communications;
 using Toybox.System;
 using Toybox.WatchUi;
 
+const SortTypeId = "sort_type";
 const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
 const TaskUrl2 = "/tasks/";
 
@@ -88,6 +89,8 @@ class ListTasksRequest extends Request {
     var list_id;
     var pending_rows;
     var next_page_token;
+    var sort_type;
+    var tasks_view;
 
     function initialize(app, loading_view, list_name, list_id) {
         Request.initialize();
@@ -98,6 +101,16 @@ class ListTasksRequest extends Request {
         // pending tasks to load, indexed by their sort string
         self.pending_rows = {};
         self.next_page_token = null;
+
+        var sort_type_setting = Application.Properties.getValue($.SortTypeId);
+        if(sort_type_setting == 1) {
+            self.sort_type = :sort_user;
+        }
+        else {
+            self.sort_type = :sort_none;
+        }
+
+        self.tasks_view = new TasksView(self.list_name);
     }
 
     function request(access_token, callback) {
@@ -126,16 +139,26 @@ class ListTasksRequest extends Request {
     function run(returnCode, data) {
         var task_items = data["items"];
 
-        for(var i = 0; i < task_items.size(); i++) {
-            var item = task_items[i];
-            var sort_key = item["position"].toNumber();
-            if(sort_key == null) {
-                sort_key = i + 1024;
-            }
+        if(self.sort_type == :sort_user) {
+            for(var i = 0; i < task_items.size(); i++) {
+                var item = task_items[i];
+                var sort_key = item["position"].toNumber();
+                if(sort_key == null) {
+                    sort_key = i + 1024;
+                }
 
-            self.pending_rows[sort_key] = [
-                item["title"], item["notes"], item["id"],
-                "completed".equals(item["status"])];
+                self.pending_rows[sort_key] = [
+                    item["title"], item["notes"], item["id"],
+                    "completed".equals(item["status"])];
+            }
+        }
+        else {
+            for(var i = 0; i < task_items.size(); i++) {
+                var item = task_items[i];
+                self.tasks_view.addItem(
+                    item["title"], item["notes"], item["id"],
+                    "completed".equals(item["status"]));
+            }
         }
 
         if(data["nextPageToken"] != null) {
@@ -143,23 +166,23 @@ class ListTasksRequest extends Request {
             return :rerun;
         }
         else {
-            var sort_keys = self.pending_rows.keys();
-            sort(sort_keys);
+            if(self.sort_type == :sort_user) {
+                var sort_keys = self.pending_rows.keys();
+                sort(sort_keys);
 
-            var view = new TasksView(self.list_name);
-
-            for(var i = 0; i < sort_keys.size(); i++) {
-                var item = self.pending_rows[sort_keys[i]];
-                view.addItem(item[0], item[1], item[2], item[3]);
+                for(var i = 0; i < sort_keys.size(); i++) {
+                    var item = self.pending_rows[sort_keys[i]];
+                    self.tasks_view.addItem(item[0], item[1], item[2], item[3]);
+                }
             }
 
             if(self.loading_view.stillAlive() && self.loading_view.get().is_visible) {
                 WatchUi.switchToView(
-                    view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+                    self.tasks_view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
             }
             else {
                 WatchUi.pushView(
-                    view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+                    self.tasks_view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
             }
             return null;
         }
