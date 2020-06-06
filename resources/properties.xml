@@ -1,4 +1,6 @@
 <properties>
   <property id="api_token" type="string"></property>
   <property id="sort_type" type="number">1</property>
+  <property id="show_completed" type="boolean">false</property>
+  <property id="show_hidden" type="boolean">false</property>
 </properties>

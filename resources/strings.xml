@@ -5,4 +5,6 @@
   <string id="SortTypePrompt">Sort tasks? (None is faster)</string>
   <string id="SortTypeNone">None</string>
   <string id="SortTypeUser">User</string>
+  <string id="ShowCompleted">Show completed tasks</string>
+  <string id="ShowHidden">Show hidden tasks</string>
 </strings>

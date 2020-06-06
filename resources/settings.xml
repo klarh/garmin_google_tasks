@@ -8,4 +8,10 @@
       <listEntry value="1">@Strings.SortTypeUser</listEntry>
     </settingConfig>
   </setting>
+  <setting propertyKey="@Properties.show_completed" title="@Strings.ShowCompleted">
+    <settingConfig type="boolean"/>
+  </setting>
+  <setting propertyKey="@Properties.show_hidden" title="@Strings.ShowHidden">
+    <settingConfig type="boolean"/>
+  </setting>
 </settings>

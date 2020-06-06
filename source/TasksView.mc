@@ -3,6 +3,8 @@ using Toybox.System;
 using Toybox.WatchUi;
 
 const SortTypeId = "sort_type";
+const ShowCompletedId = "show_completed";
+const ShowHiddenId = "show_hidden";
 const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
 const TaskUrl2 = "/tasks/";
 
@@ -91,6 +93,8 @@ class ListTasksRequest extends Request {
     var next_page_token;
     var sort_type;
     var tasks_view;
+    var show_completed;
+    var show_hidden;
 
     function initialize(app, loading_view, list_name, list_id) {
         Request.initialize();
@@ -110,6 +114,9 @@ class ListTasksRequest extends Request {
             self.sort_type = :sort_none;
         }
 
+        self.show_completed = Application.Properties.getValue($.ShowCompletedId);
+        self.show_hidden = Application.Properties.getValue($.ShowHiddenId);
+
         self.tasks_view = new TasksView(self.list_name);
     }
 
@@ -117,8 +124,8 @@ class ListTasksRequest extends Request {
         var params = {
             "access_token" => access_token,
             "maxResults" => 100,
-            "showCompleted" => "True",
-            /* "showHidden" => "True", */
+            "showCompleted" => self.show_completed? "True": "False",
+            "showHidden" => self.show_hidden? "True": "False",
         };
 
         if(self.next_page_token != null) {
