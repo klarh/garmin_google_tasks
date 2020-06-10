@@ -5,6 +5,7 @@ using Toybox.WatchUi;
 const SortTypeId = "sort_type";
 const ShowCompletedId = "show_completed";
 const ShowHiddenId = "show_hidden";
+const TaskQueryFields = "nextPageToken,items(id,title,parent,position,notes,status)";
 const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
 const TaskUrl2 = "/tasks/";
 
@@ -156,6 +157,7 @@ class ListTasksRequest extends Request {
     function request(access_token, callback) {
         var params = {
             "access_token" => access_token,
+            "fields" => $.TaskQueryFields,
             "maxResults" => 100,
             "showCompleted" => self.show_completed? "True": "False",
             "showHidden" => self.show_hidden? "True": "False",
