@@ -8,6 +8,33 @@ const ShowHiddenId = "show_hidden";
 const TaskUrl1 = "https://www.googleapis.com/tasks/v1/lists/";
 const TaskUrl2 = "/tasks/";
 
+function arrcmp(a, b) {
+    var a_size = a.size();
+    var b_size = b.size();
+    var min_size = a_size < b_size? a_size: b_size;
+
+    for(var i = 0; i < min_size; i++) {
+        var ai = a[i];
+        var bi = b[i];
+
+        if(ai < bi) {
+            return -1;
+        }
+        else if(ai > bi) {
+            return 1;
+        }
+    }
+
+    if(a_size < b_size) {
+        return -1;
+    }
+    else if(a_size > b_size) {
+        return 1;
+    }
+
+    return 0;
+}
+
 function merge_sorted(src, dest, i, j) {
     // p and q: current indices from src[i] and src[j]
     var p = i;
@@ -29,7 +56,7 @@ function merge_sorted(src, dest, i, j) {
         var left = src[p];
         var right = src[q];
 
-        if(left <= right) {
+        if(arrcmp(left, right) <= 0) {
             dest[r] = left;
             p += 1;
         }
@@ -55,7 +82,7 @@ function merge_sorted(src, dest, i, j) {
     }
 }
 
-// Sort an array of Numbers
+// Sort an array of Number arrays
 function sort(arr) {
     var N = arr.size();
     var tempspace = new [N];
@@ -90,6 +117,8 @@ class ListTasksRequest extends Request {
     var list_name;
     var list_id;
     var pending_rows;
+    var parent_map;
+    var position_map;
     var next_page_token;
     var sort_type;
     var tasks_view;
@@ -104,6 +133,10 @@ class ListTasksRequest extends Request {
         self.list_id = list_id;
         // pending tasks to load, indexed by their sort string
         self.pending_rows = {};
+        // map from id -> task's parent id
+        self.parent_map = {};
+        // map from id -> (local) position
+        self.position_map = {};
         self.next_page_token = null;
 
         var sort_type_setting = Application.Properties.getValue($.SortTypeId);
@@ -154,8 +187,16 @@ class ListTasksRequest extends Request {
                     sort_key = i + 1024;
                 }
 
-                self.pending_rows[sort_key] = [
-                    item["title"], item["notes"], item["id"],
+                var parent = item["parent"];
+                var item_id = item["id"];
+                if(parent != null) {
+                    self.parent_map[item_id] = parent;
+                }
+
+                self.position_map[item_id] = sort_key;
+
+                self.pending_rows[item_id] = [
+                    item["title"], item["notes"],
                     "completed".equals(item["status"])];
             }
         }
@@ -174,12 +215,40 @@ class ListTasksRequest extends Request {
         }
         else {
             if(self.sort_type == :sort_user) {
-                var sort_keys = self.pending_rows.keys();
+                var all_ids = self.pending_rows.keys();
+                var position_rows = {};
+                for(var i = 0; i < all_ids.size(); i++) {
+                    var id = all_ids[i];
+                    var item_key = [];
+                    while(id != null) {
+                        item_key.add(self.position_map[id]);
+                        id = self.parent_map[id];
+                    }
+
+                    var end = item_key.size() - 1;
+
+                    for(var j = 0; j < item_key.size()/2; j++) {
+                        var tmp = item_key[j];
+                        item_key[j] = item_key[end];
+                        item_key[end] = tmp;
+                        end -= 1;
+                    }
+
+                    position_rows[item_key] = all_ids[i];
+                }
+
+                var sort_keys = position_rows.keys();
                 sort(sort_keys);
 
                 for(var i = 0; i < sort_keys.size(); i++) {
-                    var item = self.pending_rows[sort_keys[i]];
-                    self.tasks_view.addItem(item[0], item[1], item[2], item[3]);
+                    var item_key = sort_keys[i];
+                    var item_id = position_rows[item_key];
+                    var item = self.pending_rows[item_id];
+                    var task_name = item[0];
+                    for(var j = 1; j < item_key.size(); j++) {
+                        task_name = "  " + task_name;
+                    }
+                    self.tasks_view.addItem(task_name, item[1], item_id, item[2]);
                 }
             }
 
