@@ -1,3 +1,8 @@
+# v0.3 - 2020/06/10
+
+- Support nested tasks when user sorting of task lists is enabled
+- Increase speed of loading long task lists
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order
