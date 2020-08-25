@@ -7,6 +7,10 @@
 
 - Don't fail when receiving HTTP 204 responses in some cases
 
+## v0.3.2 - 2020/08/24
+
+- Fix task list and tasks views not loading upon an HTTP 204 response
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order
