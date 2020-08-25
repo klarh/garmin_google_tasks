@@ -160,7 +160,7 @@ class RequestAuthenticator {
 
     function processRequestsCallback(responseCode, data) {
         self.currently_processing = false;
-        if(responseCode == 200) {
+        if(responseCode == 200 || responseCode == 204) {
             var task = self.pending_tasks[0];
             var result = task.run(responseCode, data);
 

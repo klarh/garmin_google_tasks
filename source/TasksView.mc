@@ -179,6 +179,10 @@ class ListTasksRequest extends Request {
     }
 
     function run(returnCode, data) {
+        if(returnCode == 204) {
+            return null;
+        }
+
         var task_items = data["items"];
 
         if(self.sort_type == :sort_user) {
@@ -315,6 +319,10 @@ class CheckTaskRequest extends Request {
     }
 
     function run(returnCode, data) {
+        if(returnCode == 204) {
+            return null;
+        }
+
         if("completed".equals(data["status"])) {
             data["status"] = "needsAction";
         }
