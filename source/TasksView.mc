@@ -180,6 +180,14 @@ class ListTasksRequest extends Request {
 
     function run(returnCode, data) {
         if(returnCode == 204) {
+            if(self.loading_view.stillAlive() && self.loading_view.get().is_visible) {
+                WatchUi.switchToView(
+                    self.tasks_view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+            }
+            else {
+                WatchUi.pushView(
+                    self.tasks_view, new TasksDelegate(self.app, self.list_id), WatchUi.SLIDE_LEFT);
+            }
             return null;
         }
 

@@ -30,17 +30,15 @@ class ListTaskListRequest extends Request {
     }
 
     function run(returnCode, data) {
-        if(returnCode == 204) {
-            return;
-        }
-
-        var task_list = data["items"];
-
         var view = new TaskListView();
 
-        for(var i = 0; i < task_list.size(); i++) {
-            var item = task_list[i];
-            view.addItem(item["title"], item["id"]);
+        if(returnCode == 200) {
+            var task_list = data["items"];
+
+            for(var i = 0; i < task_list.size(); i++) {
+                var item = task_list[i];
+                view.addItem(item["title"], item["id"]);
+            }
         }
 
         WatchUi.switchToView(
