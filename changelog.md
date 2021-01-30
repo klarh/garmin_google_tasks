@@ -11,6 +11,10 @@
 
 - Fix task list and tasks views not loading upon an HTTP 204 response
 
+## v0.3.3 - 2021/01/30
+
+- Update device list for new SDK: support fenix5xplus and venusq, remove support for vivoactive3
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order
