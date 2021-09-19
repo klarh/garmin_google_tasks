@@ -15,6 +15,10 @@
 
 - Update device list for new SDK: support fenix5xplus and venusq, remove support for vivoactive3
 
+## v0.3.4 - 2021/09/19
+
+- Update device list for new SDK: support descentmk2, descentmk2s, enduro, fenix5x, fr55, fr945lte, venu2, venu2s
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order

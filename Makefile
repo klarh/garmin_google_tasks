@@ -10,6 +10,10 @@ sdk:
 developer_key.der:
 	$(error Need to run "ln -s <key_file> developer_key.der")
 
+.PHONY: list-devices
+list-devices: sdk
+	awk 'BEGIN{FS="[\"-]"};/mask id/{print $$2}' sdk/ReferenceGuides.html | sort | uniq
+
 build:
 	mkdir -p $@
 
