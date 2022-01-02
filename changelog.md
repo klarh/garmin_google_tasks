@@ -19,6 +19,10 @@
 
 - Update device list for new SDK: support descentmk2, descentmk2s, enduro, fenix5x, fr55, fr945lte, venu2, venu2s
 
+## v0.3.5 - 2022/01/02
+
+- Add supported devices: fr245, fr245m, fr745, fr945
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order
