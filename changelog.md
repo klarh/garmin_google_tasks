@@ -23,6 +23,10 @@
 
 - Add supported devices: fr245, fr245m, fr745, fr945
 
+## v0.3.6 - 2022/02/13
+
+- Add supported devices: fenix7, fenix7s, fenix7x, venu2plus
+
 # v0.2 - 2020/06/06
 
 - Add option to sort tasks by user order
